@@ -1,5 +1,7 @@
 package rca.risbo.springbootrestcontrollertutorial.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,11 +27,10 @@ public class CarRestController {
         return carService.getAllCars();
     }
 
-//    @GetMapping(params = {"minPrice", "maxPrice"}) ou
-    @GetMapping
+    @GetMapping(params = {"minPrice", "maxPrice"})
     public List<Car> getAllFilterdByPrice(
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice)
+            @RequestParam @Positive(message = "minPrice parameter must be greater than zero") Double minPrice,
+            @RequestParam @Positive(message = "maxPrice parameter must be greater than zero") Double maxPrice)
     {
         return carService.getCarsWithPriceFilter(minPrice, maxPrice);
     }
@@ -40,7 +41,7 @@ public class CarRestController {
     }
 
     @PostMapping
-    public Car createCar(@RequestBody Car car) {
+    public Car createCar(@Valid @RequestBody Car car) {
         return carService.create(car);
     }
 
