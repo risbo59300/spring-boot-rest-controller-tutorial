@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 @Service
 public class CarServiceImpl implements CarService {
 
-    private List<Car> cars = new ArrayList<>(Arrays.asList(
+    private final List<Car> cars = new ArrayList<>(Arrays.asList(
             new Car(1L, "Astra", "Opel", 100, 18000d),
             new Car(2L, "Insigna", "Opel", 120, 220000d),
             new Car(3L, "Golf", "VW", 90, 17000d)
@@ -44,7 +44,7 @@ public class CarServiceImpl implements CarService {
     public Car create(Car car) {
         Long newId = cars
                 .stream()
-                .mapToLong(car_ -> Long.valueOf(car_.getId()))
+                .mapToLong(car_ -> car_.getId())
                 .max()
                 .orElse(0L) + 1L;
         car.setId(newId);
